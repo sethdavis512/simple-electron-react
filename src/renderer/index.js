@@ -13,6 +13,10 @@ const App = () => {
     const [inputFilePath, setInputFilePath] = useState('')
     const [outputFilePath, setOutputFilePath] = useState('')
 
+    const createHandlePathChange = (setFn) => (event) => {
+        setFn(event.currentTarget.value)
+    }
+
     const createHandleDialogOpen = (setFn, isFile = false) => async () => {
         const filePath = await ipcRenderer.invoke('open-file', isFile)
         setFn(filePath)
@@ -28,7 +32,7 @@ const App = () => {
                     <div className="column">
                         <FormField label="Input File Path">
                             <TextInput
-                                handleChange={() => console.log('Changed!')}
+                                handleChange={createHandlePathChange(setInputFilePath)}
                                 value={inputFilePath}
                             />
                         </FormField>
@@ -44,7 +48,7 @@ const App = () => {
                     <div className="column">
                         <FormField label="Output File Path">
                             <TextInput
-                                handleChange={() => console.log('Changed!')}
+                                handleChange={createHandlePathChange(setOutputFilePath)}
                                 value={outputFilePath}
                             />
                         </FormField>
